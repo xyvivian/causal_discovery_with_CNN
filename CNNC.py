@@ -98,7 +98,7 @@ def CNN(result_dir, x_train,y_train,x_test,y_test = None, num_class=3):
 # The CNN: for generated histogram classifications, result should be stored as in the result_dir
     if num_class > 2:
         y_train = keras.utils.to_categorical(y_train, num_classes=3, dtype='float32')
-        if y_test != None:
+        if type(y_test) == list:
             y_test = keras.utils.to_categorical(y_test, num_classes=3, dtype='float32')
 
     print(x_train.shape)
@@ -165,7 +165,7 @@ def CNN(result_dir, x_train,y_train,x_test,y_test = None, num_class=3):
     model.save(model_path)
     print('Saved trained model at %s ' % model_path)
     # Score trained model.
-    if y_test != None:
+    if type(y_test) == list:
         scores = model.evaluate(x_test, y_test, verbose=1)
         print('Test loss:', scores[0])
         print('Test accuracy:', scores[1])
@@ -199,7 +199,7 @@ if len(sys.argv) > 8:
     CNN(result_dir =save_dir, x_train=x_train, y_train=y_train,x_test=x_test,y_test=y_test, num_class=num_class)
 else:
     (x_train, y_train) = load_data(train_data_path, train_label_path, size)
-    (x_test) = load_data(test_data_path)
+    x_test = load_data(test_data_path,size)
     CNN(result_dir=save_dir, x_train=x_train, y_train=y_train, x_test=x_test, num_class=num_class)
 
 
